@@ -1,0 +1,18 @@
+[
+{
+  "text": "test1",
+  "read": "false"
+},
+{
+  "text": "test2",
+  "read": "false"
+},
+{
+  "text": "test3",
+  "read": "false"
+},
+{
+  "text": "test4",
+  "read": "true"
+}
+]
