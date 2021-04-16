@@ -72,3 +72,85 @@
     width: 35px;
     height: 35px;
 }
+
+.unreadNotifications {
+    position: relative;
+    top: -5px;
+    left: 18px;
+    color: #C1C8E4;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.extendedNotification {
+    display: none;
+    position: fixed;
+    top: 75px;
+    left: 55px;
+    width: 150px;
+    height: 75px;
+    background-color: #5680E9;
+    background-image: linear-gradient(
+            to right,
+            #5680E9, #8860D0
+    );
+}
+
+.extendedUser {
+    display: none;
+    position: fixed;
+    top: 185px;
+    left: 55px;
+    width: 150px;
+    height: 75px;
+    background-color: #5680E9;
+    background-image: linear-gradient(
+            to right,
+            #5680E9, #8860D0
+    );
+}
+
+.extendedSettings {
+    display: none;
+    position: fixed;
+    top: 295px;
+    left: 55px;
+    width: 150px;
+    height: 75px;
+    background-color: #5680E9;
+    background-image: linear-gradient(
+            to right,
+            #5680E9, #8860D0
+    );
+}
+
+
+.notificationIcon:hover + .extendedNotification {
+    display: block;
+}
+
+.userIcon:hover + .extendedUser {
+    display: block;
+}
+
+.settingsIcon:hover + .extendedSettings {
+    display: block;
+}
+
+.profileText, .settingsText{
+    position: relative;
+    top: 2px;
+    left: 35px;
+    color: #C1C8E4;
+    font-weight: bold;
+    font-size: 23px;
+}
+
+.notificationText{
+    position: relative;
+    top: 2px;
+    left: 15px;
+    color: #C1C8E4;
+    font-weight: bold;
+    font-size: 23px;
+}

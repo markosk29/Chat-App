@@ -14,13 +14,27 @@
         <div class="gradient1"></div>
         <div class="button1" @click="outputNotifications">
             <img src="img/notification.png" class="notificationIcon">
+            <div class="extendedNotification">
+                <p class="notificationText">Notifications</p>
+            </div>
+
+            <p class="unreadNotifications" v-if="meetsConditions()">{{unreadNotifications}}</p>
+            <p class="unreadNotifications" v-if="unreadNotifications > 100">99+</p>
         </div>
         <div class="button2">
             <img src="img/user.png" class="userIcon">
+            <div class="extendedUser">
+                <p class="profileText">Profile</p>
+            </div>
         </div>
         <div class="button3">
             <img src="img/settings.png" class="settingsIcon">
+            <div class="extendedSettings">
+                <p class="settingsText">Settings</p>
+            </div>
         </div>
+
+
     </div>
 
     <script src="js/sidebar.js"></script>
