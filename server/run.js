@@ -1,4 +1,4 @@
-let api = require('./api.js').app;
+let api = require('./js/api.js').app;
 let notifications = require('./notifications.json');
 
 api.get('/', function(request, response) {
