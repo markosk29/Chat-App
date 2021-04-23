@@ -1,5 +1,5 @@
-let api = require('./js/api.js').app;
-let notifications = require('./notifications.json');
+let api = require('./api.js').app;
+let notifications = require('./src/json/notifications.json');
 
 api.get('/', function(request, response) {
     response.json("node.js backend");
