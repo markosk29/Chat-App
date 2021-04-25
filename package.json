@@ -9,9 +9,9 @@
   },
   "dependencies": {
     "body-parser": "^1.12.2",
+    "core-js": "^3.6.5",
     "cors": "^2.8.5",
     "express": "3.x",
-    "core-js": "^3.6.5",
     "vue": "^2.6.11"
   },
   "devDependencies": {

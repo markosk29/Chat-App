@@ -17,6 +17,12 @@
       </div>
     </div>
     <div class="button3">
+      <img src="../assets/chat.png" class="chatIcon">
+      <div class="extendedChat">
+        <p class="chatText">Chat</p>
+      </div>
+    </div>
+    <div class="button4">
       <img src="../assets/settings.png" class="settingsIcon">
       <div class="extendedSettings">
         <p class="settingsText">Settings</p>
@@ -127,14 +133,27 @@ export default {
   );
 }
 
-.button1:hover, .button2:hover, .button3:hover {
+.button4 {
+  position: relative;
+  top: 180px;
+  height: 75px;
+  left: 5px;
+  width: 50px;
+  background-color: #8860D0;
+  background-image: linear-gradient(
+      to right,
+      #5680E9, #8860D0
+  );
+}
+
+.button1:hover, .button2:hover, .button3:hover, .button4:hover {
   background-image: linear-gradient(
       to right,
       #8860D0, #5680E9
   );
 }
 
-.notificationIcon, .userIcon, .settingsIcon {
+.notificationIcon, .userIcon, .settingsIcon, .chatIcon {
   position: relative;
   top: 20px;
   left: 5px;
@@ -179,7 +198,7 @@ export default {
   );
 }
 
-.extendedSettings {
+.extendedChat {
   display: none;
   position: fixed;
   top: 295px;
@@ -193,12 +212,25 @@ export default {
   );
 }
 
+.extendedSettings {
+  display: none;
+  position: fixed;
+  top: 405px;
+  left: 55px;
+  width: 150px;
+  height: 75px;
+  background-color: #5680E9;
+  background-image: linear-gradient(
+      to right,
+      #5680E9, #8860D0
+  );
+}
 
-.notificationIcon:hover + .extendedNotification, .userIcon:hover + .extendedUser, .settingsIcon:hover + .extendedSettings {
+.notificationIcon:hover + .extendedNotification, .userIcon:hover + .extendedUser, .settingsIcon:hover + .extendedSettings, .chatIcon:hover + .extendedChat {
   display: block;
 }
 
-.profileText, .settingsText{
+.profileText, .settingsText, chatText{
   position: relative;
   top: 2px;
   left: 35px;
