@@ -16,7 +16,7 @@
         <p class="profileText">Profile</p>
       </div>
     </div>
-    <div class="button3" >
+    <div class="button3" @click='show()'>
       <img src="../assets/chat.png" class="chatIcon">
       <div class="extendedChat">
         <p class="chatText">Chat</p>
@@ -36,10 +36,12 @@ import axios from 'axios'
 
 export default {
   name: 'Sidebar',
+
   data: function() {
     return {
       notifications: [],
-      unreadNotifications: 0
+      unreadNotifications: 0,
+      component: 'none'
     }
   },
   created: function(){
@@ -67,6 +69,9 @@ export default {
 
         this.$forceUpdate();
       }, 50)
+    },
+    show(){
+      this.$emit('clickedComponent', 'chatComponent')
     }
   }
 }
