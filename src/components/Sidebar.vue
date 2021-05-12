@@ -1,7 +1,7 @@
 <template>
   <div id="sidebar" class="bar">
     <div class="gradient1"></div>
-    <div class="button1" @click="outputNotifications">
+    <div class="button1" >
       <img src="../assets/notification.png" class="notificationIcon">
       <div class="extendedNotification">
         <p class="notificationText">Notifications</p>
@@ -10,19 +10,19 @@
       <p class="unreadNotifications" v-if="meetsConditions()">{{unreadNotifications}}</p>
       <p class="unreadNotifications" v-if="unreadNotifications > 100">99+</p>
     </div>
-    <div class="button2">
+    <div class="button2" >
       <img src="../assets/user.png" class="userIcon">
       <div class="extendedUser">
         <p class="profileText">Profile</p>
       </div>
     </div>
-    <div class="button3">
+    <div class="button3" >
       <img src="../assets/chat.png" class="chatIcon">
       <div class="extendedChat">
         <p class="chatText">Chat</p>
       </div>
     </div>
-    <div class="button4">
+    <div class="button4" >
       <img src="../assets/settings.png" class="settingsIcon">
       <div class="extendedSettings">
         <p class="settingsText">Settings</p>
@@ -39,7 +39,7 @@ export default {
   data: function() {
     return {
       notifications: [],
-      unreadNotifications: 0,
+      unreadNotifications: 0
     }
   },
   created: function(){
@@ -230,7 +230,7 @@ export default {
   display: block;
 }
 
-.profileText, .settingsText, chatText{
+.profileText, .settingsText, .chatText{
   position: relative;
   top: 2px;
   left: 35px;
