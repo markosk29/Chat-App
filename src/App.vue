@@ -1,7 +1,8 @@
 <template>
   <div id="app">
     <Sidebar @clickedComponent="getClickedComponent($event)"/>
-    <Notifications class="temp1" />
+
+    <Notifications class="notificationsComponent" v-if="component === 'notificationsComponent'" />
     <GroupChat class="temp2" v-if="component == 'chatComponent'"/>
   </div>
 </template>
@@ -33,8 +34,7 @@ export default {
 </script>
 
 <style scoped>
-  .temp1 {
-    display: block;
-  }
-
+.notificationsComponent {
+  z-index: -1;
+}
 </style>

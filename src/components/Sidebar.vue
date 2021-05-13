@@ -1,7 +1,7 @@
 <template>
   <div id="sidebar" class="bar">
     <div class="gradient1"></div>
-    <div class="button1" >
+    <div class="button1" @click="show(1)">
       <img src="../assets/notification.png" class="notificationIcon">
       <div class="extendedNotification">
         <p class="notificationText">Notifications</p>
@@ -16,7 +16,7 @@
         <p class="profileText">Profile</p>
       </div>
     </div>
-    <div class="button3" @click='show()'>
+    <div class="button3" @click='show(3)'>
       <img src="../assets/chat.png" class="chatIcon">
       <div class="extendedChat">
         <p class="chatText">Chat</p>
@@ -70,8 +70,13 @@ export default {
         this.$forceUpdate();
       }, 50)
     },
-    show(){
-      this.$emit('clickedComponent', 'chatComponent')
+    show(id){
+      if(id === 1) {
+        this.$emit('clickedComponent', 'notificationsComponent');
+      }
+      if(id === 3) {
+        this.$emit('clickedComponent', 'chatComponent');
+      }
     }
   }
 }
