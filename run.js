@@ -9,7 +9,21 @@ api.get('/notifications', function(request, response) {
     response.json(notifications);
 });
 
-api.listen(3000, function() {
+const server = api.listen(3000, function() {
     console.log('CORS-enabled web server is listening on port 3000...');
+});
+
+const io = require('socket.io')(server, {
+    cors: {
+      origin: '*',
+    }
+  });
+
+io.on('connection', function(socket) {
+    console.log(socket.id);
+
+    socket.on('SEND_MESSAGE', function(data) {
+        io.emit('MESSAGE', data)
+    });
 });
 
