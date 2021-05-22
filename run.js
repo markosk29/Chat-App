@@ -25,5 +25,9 @@ io.on('connection', function(socket) {
     socket.on('SEND_MESSAGE', function(data) {
         io.emit('MESSAGE', data)
     });
+
+    socket.on('JOIN', function(data) {
+        io.emit('JOIN_MSG', data)
+    });
 });
 

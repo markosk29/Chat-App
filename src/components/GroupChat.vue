@@ -7,15 +7,14 @@
           </div>
           <div class="card-body">
               <div class="messages" v-for="(msg, index) in messages" :key="index">
-                  <p><span class="font-weight-bold">{{ msg.user }}: </span>{{ msg.message }}</p>
+                  <p><span class="font-weight-bold">{{ msg.user }} </span>{{ msg.message }}</p>
               </div>
           </div>
       </div>
       <div class="card-footer">
           <form @submit.prevent="sendMessage">
               <div class="gorm-group">
-                  <label for="user">User:</label>
-                  <input type="text" v-model="user" class="form-control">
+                  <label for="user">User: {{user}}</label>
               </div>
               <div class="gorm-group pb-3">
                   <label for="message">Message:</label>
@@ -40,12 +39,24 @@ export default{
             socket : io('localhost:3000')
         }
     },
+    created: function(){
+        this.user = prompt("Please enter a name");
+
+        this.socket.emit('JOIN', {
+            user: this.user,
+            message: " entered the chat"
+        });
+
+        this.socket.on('JOIN_MSG', (msg) => {
+            this.messages = [...this.messages, msg];
+        });
+    },
     methods: {
         sendMessage(e) {
             e.preventDefault();
 
             this.socket.emit('SEND_MESSAGE', {
-                user: this.user,
+                user: this.user + ":",
                 message: this.message
             });
             this.message = ''
