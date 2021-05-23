@@ -173,7 +173,7 @@ export default {
 
 .unreadNotifications {
   position: relative;
-  top: -5px;
+  top: 13px;
   left: 18px;
   color: #C1C8E4;
   font-weight: bold;
@@ -242,7 +242,7 @@ export default {
 
 .profileText, .settingsText, .chatText{
   position: relative;
-  top: 2px;
+  top: 20px;
   left: 35px;
   color: #C1C8E4;
   font-weight: bold;
@@ -251,8 +251,8 @@ export default {
 
 .notificationText{
   position: relative;
-  top: 2px;
-  left: 15px;
+  top: 20px;
+  left: 5px;
   color: #C1C8E4;
   font-weight: bold;
   font-size: 23px;

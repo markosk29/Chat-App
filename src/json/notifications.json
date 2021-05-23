@@ -1,67 +1,67 @@
 [
   {
-    "text": "test1",
-    "time": "DD/MM/YYYY | HH:MM",
+    "text": "Welcome to our chat app!",
+    "time": "18/05/2021 | 21:17",
     "read": "false"
   },
   {
     "text": "test2",
-    "time": "DD/MM/YYYY | HH:MM",
-    "read": "false"
-  },
-  {
-    "text": "test3",
-    "time": "DD/MM/YYYY | HH:MM",
-    "read": "false"
-  },
-  {
-    "text": "test4",
-    "time": "DD/MM/YYYY | HH:MM",
-    "read": "true"
-  },
-  {
-    "text": "test5",
-    "time": "DD/MM/YYYY | HH:MM",
-    "read": "false"
-  },
-  {
-    "text": "test6",
-    "time": "DD/MM/YYYY | HH:MM",
-    "read": "false"
-  },
-  {
-    "text": "test7",
-    "time": "DD/MM/YYYY | HH:MM",
-    "read": "false"
-  },
-  {
-    "text": "asdsadaswqreewuhrieowsfdjsijpierjqwpeojqweopqwjeqoeqjpeq",
     "time": "13/05/2021 | 19:00",
     "read": "false"
   },
   {
+    "text": "test3",
+    "time": "13/05/2021 | 19:00",
+    "read": "false"
+  },
+  {
+    "text": "test4",
+    "time": "13/05/2021 | 19:00",
+    "read": "true"
+  },
+  {
+    "text": "test5",
+    "time": "13/05/2021 | 19:00",
+    "read": "false"
+  },
+  {
+    "text": "test6",
+    "time": "13/05/2021 | 19:00",
+    "read": "false"
+  },
+  {
+    "text": "test7",
+    "time": "13/05/2021 | 19:00",
+    "read": "false"
+  },
+  {
+    "text": "x has started a conversation with you!",
+    "time": "18/05/2021 | 22:31",
+    "read": "false"
+  },
+  {
     "text": "test9",
-    "time": "DD/MM/YYYY | HH:MM",
+    "time": "13/05/2021 | 19:00",
     "read": "false"
   },
   {
     "text": "test10",
-    "time": "DD/MM/YYYY | HH:MM",
+    "time": "13/05/2021 | 19:00",
     "read": "false"
   },
   {
     "text": "test11",
-    "time": "DD/MM/YYYY | HH:MM",
+    "time": "13/05/2021 | 19:00",
     "read": "true"
   },
   {
     "text": "test12",
-    "time": "DD/MM/YYYY | HH:MM",
+    "time": "13/05/2021 | 19:00",
     "read": "true"
   },
   {
     "text": "test13",
-    "time": "DD/MM/YYYY | HH:MM",
+    "time": "13/05/2021 | 19:00",
     "read": "false"
   }
 ]

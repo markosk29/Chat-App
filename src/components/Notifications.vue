@@ -3,22 +3,24 @@
   <div class="background">
     <div class="deco1"></div>
     <div class="deco2"></div>
-    <div class="table">
-      <table>
-        <tr v-for="notification in notifications" :key="notification.text">
-           <th v-if="notification.read === 'true'" style="color: gray">{{ notification.text }}</th>
-           <th v-if="notification.read === 'false'" style="color: black">{{ notification.text }}</th>
-           <th v-if="notification.read === 'true'" style="color: gray; font-size: 20px">{{ notification.time }}</th>
-           <th v-if="notification.read === 'false'" style="color: black; font-size: 20px">{{ notification.time }}</th>
-        </tr>
-        <tr v-for="notification in notifications" :key="notification.text">
-          <th v-if="notification.read === 'true'" style="color: gray">{{ notification.text }}</th>
-          <th v-if="notification.read === 'false'" style="color: black">{{ notification.text }}</th>
-          <th v-if="notification.read === 'true'" style="color: gray; font-size: 20px">{{ notification.time }}</th>
-          <th v-if="notification.read === 'false'" style="color: black; font-size: 20px">{{ notification.time }}</th>
-        </tr>
-      </table>
+  </div>
+
+  <div class="table">
+    <div v-for="(notification, index) in notifications" :key="notification.text">
+      <div class="notification" v-if="notification.read === 'true'">
+        <p class="notificationDate" style="color: gray; font-size: 20px; margin-left: 35px">{{ notification.time }}</p>
+        <p class="notificationMessage" style="color: gray">{{ notification.text }}</p>
+      </div>
+      <div class="notification" v-if="notification.read === 'false'" @click="selectNotification(index)">
+        <input v-model="checkboxes[index]" type="checkbox" onclick="return false;" v-if="notification.read === 'false'" style="margin-right: 20px"/>
+        <p class="notificationDate" v-if="notification.read === 'false'" style="color: black; font-size: 20px">{{ notification.time }}</p>
+        <p class="notificationMessage" v-if="notification.read === 'false'" style="color: black">{{ notification.text }}</p>
+      </div>
     </div>
+  </div>
+
+  <div class="button1">
+    <p>MARK AS READ</p>
   </div>
 
 </template>
@@ -30,12 +32,24 @@ export default {
   name: "Notifications",
 
   data() {
-    return {notifications: []}
+    return {notifications: [],
+    checkboxes: []}
   },
   created: function(){
     axios
         .get("http://localhost:3000/notifications")
         .then(response => (this.notifications = response.data))
+
+    this.uncheckAllBoxes();
+  },
+  methods: {
+    uncheckAllBoxes() {
+      this.notifications.forEach(index => this.checkboxes[index] = false)
+    },
+    selectNotification(index) {
+      this.checkboxes[index] = !this.checkboxes[index];
+      console.log("test");
+    }
   }
 }
 </script>
@@ -50,9 +64,7 @@ export default {
   background: #C1C8E4;
 }
 .deco1 {
-  position: fixed;
-  top: 150px;
-  left: 0;
+  position: relative;
   width: 100vw;
   height: 25vh;
   background-color: #5AB9EA;
@@ -62,9 +74,7 @@ export default {
   opacity: 25%;
 }
 .deco2 {
-  position: fixed;
-  top: 392px;
-  left: 0;
+  position: relative;
   width: 100vw;
   height: 100vh;
   background-color: #5AB9EA;
@@ -75,7 +85,7 @@ export default {
   opacity: 25%;
 }
 .table {
-  position: fixed;
+  position: absolute;
   top: 250px;
   left: 250px;
   overflow-x: auto;
@@ -84,6 +94,29 @@ export default {
   width: 1000px;
   display:block;
   font-size: 25px;
+}
+
+.notification:hover {
+  background: #5680E9;
+}
+
+.notificationMessage, .notificationDate {
+  display: inline-block;
+  position: relative;
+  margin-right: 100px;
+}
+
+.button1 {
+  position: absolute;
+  left: 1300px;
+  top: 300px;
+  background: #5AB9EA;
+  width: 250px;
+  height: 100px;
+}
+
+.button1:hover {
+  background: #5680E9;
 }
 
 /* Scrollbar costum */

@@ -1,9 +1,9 @@
 <template>
-  <div id="app">
-    <Sidebar @clickedComponent="getClickedComponent($event)"/>
-
-    <Notifications class="notificationsComponent" v-if="component === 'notificationsComponent'" />
-    <GroupChat class="temp2" v-if="component == 'chatComponent'"/>
+  <div id="app" class="page">
+    <Sidebar @clickedComponent="getClickedComponent($event)" style="z-index: 10"/>
+    <Notifications v-if="component === 'notificationsComponent'"/>
+    <GroupChat class="temp2" v-if="component === 'chatComponent'"/>
+    <Chat v-if="component === 'singleChatComponent'"/>
   </div>
 </template>
 
@@ -11,6 +11,7 @@
 import Sidebar from './components/Sidebar.vue'
 import Notifications from './components/Notifications.vue'
 import GroupChat from './components/GroupChat.vue'
+import Chat from './components/Chat'
 
 export default {
   name: 'App',
@@ -23,7 +24,8 @@ export default {
   components: {
     Sidebar,
     Notifications,
-    GroupChat
+    GroupChat,
+    Chat
   },
   methods: {
     getClickedComponent(name){
@@ -34,7 +36,14 @@ export default {
 </script>
 
 <style scoped>
-.notificationsComponent {
-  z-index: -1;
+html,body {
+  overflow-y: scroll;
+  overflow-x: scroll;
+}
+
+.page {
+  height: 800px;
+  width: 1500px;
+  overflow: hidden;
 }
 </style>
