@@ -1,13 +1,15 @@
 <template>
-    <div class="card mt-3" style="margin:0px 15px 0px 70px;">
-      <div class="card-body">
+<div class="app" style="margin:0px 15px 0px 80px;">
+    
+    <div class="card mt-3" style="margin:0px 15px 0px 40px;">
+            <div class="card-body">
           <div class="card-title">
-              <h3>Group Chat</h3>
+              <h3>{{ selectedChat }}</h3>
               <hr>
           </div>
           <div class="card-body">
               <div class="messages" v-for="(msg, index) in messages" :key="index">
-                  <p><span class="font-weight-bold">{{ msg.user }} </span>{{ msg.message }}</p>
+                  <p>{{ msg.date }}<span class="font-weight-bold">{{ msg.user }} </span>{{ msg.message }}</p>
               </div>
           </div>
       </div>
@@ -23,7 +25,8 @@
               <button type="submit" class="btn btn-primary">Send</button>
           </form>
       </div>
-  </div>
+    </div>
+</div>
 </template>
 
 <script>
@@ -33,6 +36,10 @@ export default{
     name: 'GroupChat',
     data() {
         return {
+            selectedChat: '',
+            chatName: '',
+            chatNames: [],
+            date: '',
             user: '',
             message: '',
             messages: [],
@@ -42,7 +49,12 @@ export default{
     created: function(){
         this.user = prompt("Please enter a name");
 
+        if (!this.user){
+            this.user = "Anonymous";
+        }
+
         this.socket.emit('JOIN', {
+            date: this.getDate() + " ",
             user: this.user,
             message: " entered the chat"
         });
@@ -52,10 +64,24 @@ export default{
         });
     },
     methods: {
+        addChatName(){
+            this.chatNames.push(this.chatName);
+            this.chatName = "";
+        },
+
+        getDate(){
+            const today = new Date();
+                const date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+                const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+                const dateTime = date +' '+ time;
+                return dateTime;
+        },
+
         sendMessage(e) {
             e.preventDefault();
 
             this.socket.emit('SEND_MESSAGE', {
+                date: this.getDate() + " ",
                 user: this.user + ":",
                 message: this.message
             });
@@ -72,5 +98,13 @@ export default{
 </script>
 
 <style scoped>
-
+.chats-name {
+  width: 15%;
+  height: 200px;
+  float: left;
+}
+.chats-body {
+  margin-left: 15%;
+  height: 200px;
+}
 </style>
