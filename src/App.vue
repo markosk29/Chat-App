@@ -1,6 +1,7 @@
 <template>
   <div id="app" class="page">
-    <Sidebar @clickedComponent="getClickedComponent($event)" style="z-index: 10"/>
+    <LoginRegister v-if="component === 'dummy'"/>
+    <Sidebar @clickedComponent="getClickedComponent($event)" style="z-index: 10" />
     <Notifications v-if="component === 'notificationsComponent'"/>
     <GroupChat class="temp2" v-if="component === 'chatComponent'"/>
     <Chat v-if="component === 'singleChatComponent'"/>
@@ -8,6 +9,7 @@
 </template>
 
 <script>
+import LoginRegister from "@/components/LoginRegister"
 import Sidebar from './components/Sidebar.vue'
 import Notifications from './components/Notifications.vue'
 import GroupChat from './components/GroupChat.vue'
@@ -22,6 +24,7 @@ export default {
     }
   },
   components: {
+    LoginRegister,
     Sidebar,
     Notifications,
     GroupChat,
