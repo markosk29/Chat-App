@@ -1,5 +1,27 @@
 <template>
 <div class="app" style="margin:0px 15px 0px 80px;">
+    <div class="card" style="float: left; width: 24%; height: 500px">
+        <div class="card-body" >
+        <div class="card-title" >
+            <h3>Group Chats</h3>
+            <hr>
+        </div>
+
+        <div class="chats-name" style="float: none; margin:0px 0px 0px 0px;">
+            <form class="chats " style="width:1000%; " @submit.prevent="addChatName">
+                <div class="form-inline" style="margin:0px 0px 10px 0px;">
+                <input type="text" v-model="chatName">
+                <button type="submit" class="btn btn-primary">Create Chat</button>
+                
+                </div>
+            </form>
+            <div class="chats" style="width:1000%;" v-for="(name, index) in chatNames" :key="index" v-on:click="selectChat(name)">
+                <p>{{ name.chatName }}</p>
+                <hr>
+            </div>
+        </div>
+        </div>
+    </div>
     
     <div class="card mt-3" style="margin:0px 15px 0px 40px;">
             <div class="card-body">
@@ -30,7 +52,8 @@
 </template>
 
 <script>
-import io from '../../node_modules/socket.io-client'
+import io from '../../node_modules/socket.io-client';
+import axios from "axios";
 
 export default{
     name: 'GroupChat',
@@ -53,6 +76,12 @@ export default{
             this.user = "Anonymous";
         }
 
+        console.log(this.user);
+
+        axios
+             .put("http://localhost:3000/chats", {"name": this.user})
+             .then(response => (this.chatNames = response.data));
+
         this.socket.emit('JOIN', {
             date: this.getDate() + " ",
             user: this.user,
@@ -62,6 +91,7 @@ export default{
         this.socket.on('JOIN_MSG', (msg) => {
             this.messages = [...this.messages, msg];
         });
+
     },
     methods: {
         addChatName(){
@@ -93,6 +123,7 @@ export default{
             this.messages = [...this.messages, data];
             // you can also do this.messages.push(data)
         });
+        
     }
 }
 </script>

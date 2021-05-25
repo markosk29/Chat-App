@@ -8,6 +8,77 @@ api.get('/', function(request, response) {
     });
 });
 
+api.get('/chats', (request, response) => {
+    const name = request.name;
+    connection.query("SELECT account_id FROM accounts WHERE account_username = name", (error, result) => {
+        if (error){
+            console.log("select fail");
+        }else{
+            console.log("select reusit");
+            console.log(result);
+        }
+    });
+
+    //get the id from the current username
+    connection.query("SELECT * FROM accounts", (error, result, fields) => {
+        if (error){
+            console.log("select fail");
+        }else{
+            console.log("select reusit");
+            console.log(result);
+            console.log(result[0].account_username);
+        }
+    });
+    response.json("get");
+
+});
+
+api.put('/chats', (request, response) => {
+    let name = request.body.name;
+    //get the current user id
+    connection.query("SELECT account_id FROM accounts WHERE account_username = ? ", name, (error, result) => {
+        if (error){
+            console.log("select name fail");
+        }else{
+
+            //get chat id's from the current user
+            connection.query("SELECT group_id FROM accountsgroupsrelation WHERE account_id = ?", result[0].account_id, (error, res, fields) => {
+                let chatIds = [];
+                if (error){
+                    console.log("select 2 fail");
+                }else{
+                    res.forEach(element => {
+                        chatIds.push(element.group_id);
+                    });
+                }
+
+                let chatNames = [];
+
+                //get the groups from the current username id
+                chatIds.forEach((id, index) =>{
+                    connection.query("SELECT group_name FROM chatgroups WHERE group_id = " + id, (error, res) =>{
+                        
+                        if (error){
+                            console.log("select 2 fail");
+                        }else{
+                            chatNames.push({"chatName": res[0].group_name});
+    
+                            if (index == chatIds.length-1){
+                                response.json(chatNames);
+                            }
+                        }
+
+                    });
+                   
+                });
+            
+            });
+        }
+    });
+
+    console.log(chats);
+});
+
 api.get('/notifications', function(request, response) {
     response.json(notifications);
 });
@@ -25,14 +96,14 @@ var connection = mysql.createConnection({
     port: "3306"
 });
 
-connection.query("INSERT INTO chatgroups(group_id, group_name) VALUES (5, 'Chat5')", (error, rows) => {
+/*connection.query("INSERT INTO chatgroups(group_id, group_name) VALUES (5, 'Chat5')", (error, rows) => {
     if (error){
         console.log("inserare nereusita");
     }else{
         console.log("inserare reusita");
         console.log(rows);
     }
-})
+})*/
 
 connection.connect((error) => {
     if (error){
@@ -77,12 +148,13 @@ io.on('connection', function(socket) {
     });
 });
 
-connection.query("SELECT * FROM accounts", (error, result, fields) => {
+/*connection.query("SELECT * FROM accounts", (error, result, fields) => {
     if (error){
         console.log("select fail");
     }else{
         console.log("select reusit");
         console.log(result);
+        console.log(result[0].account_username);
     }
-});
+});*/
 
