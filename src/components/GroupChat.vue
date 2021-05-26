@@ -15,7 +15,7 @@
                 
                 </div>
             </form>
-            <div class="chats" style="width:1000%;" v-for="(name, index) in chatNames" :key="index" v-on:click="selectChat(name)">
+            <div class="chats" style="width:1000%;" v-for="(name, index) in chatNames" :key="index" v-on:click="selectChat(name.chatName)">
                 <p>{{ name.chatName }}</p>
                 <hr>
             </div>
@@ -39,6 +39,14 @@
           <form @submit.prevent="sendMessage">
               <div class="gorm-group">
                   <label for="user">User: {{user}}</label>
+              </div>
+              <div class="form-inline">
+                  <label for="users">Chat users: </label>
+                  <div class="form-inline" style="margin:16px 5px 0px 5px;" v-for="(user, index) in users" :key="index">
+                      <p>  </p>
+                      <p> {{ user }}, </p>
+                      <p>  </p>
+                  </div>
               </div>
               <div class="gorm-group pb-3">
                   <label for="message">Message:</label>
@@ -64,6 +72,7 @@ export default{
             chatNames: [],
             date: '',
             user: '',
+            users: [],
             message: '',
             messages: [],
             socket : io('localhost:3000')
@@ -110,6 +119,20 @@ export default{
                 const time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
                 const dateTime = date +' '+ time;
                 return dateTime;
+        },
+        selectChat(name) {
+            this.selectedChat = name;
+
+            console.log(this.selectedChat);
+
+        //initialize chat members
+        axios
+             .get("http://localhost:3000/chatMembers", {
+                 params: {
+                     chatName: this.selectedChat
+                     }
+                 })
+             .then(response => (this.users = response.data));
         },
 
         sendMessage(e) {

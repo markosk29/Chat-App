@@ -35,8 +35,7 @@ api.get('/', function(request, response) {
 */
 api.get('/chats', (request, response) => {
     let name = request.query.name;
-    console.log("Request querry:");
-    console.log(request.query.name);
+
     //get the current user id
     connection.query("SELECT account_id FROM accounts WHERE account_username = ? ", name, (error, result) => {
         if (error){
@@ -73,6 +72,44 @@ api.get('/chats', (request, response) => {
                     });
                    
                 });
+            
+            });
+        }
+    });
+
+});
+
+api.get('/chatMembers', (request, response) => {
+    let chatName = request.query.chatName;
+
+    //get the current user id
+    connection.query("SELECT group_id FROM chatgroups WHERE group_name = ? ", chatName, (error, result) => {
+        if (error){
+            console.log("1 select name fail");
+        }else{
+            //get chat users id's from the current user
+            connection.query("SELECT account_id FROM accountsgroupsrelation WHERE group_id = ? ",result[0].group_id, (error, res) => {
+                let chatUsers = [];
+                if (error){
+
+                    console.log("select 2 fail");
+                }else{
+
+                    res.forEach((element, index) => {
+                        connection.query("SELECT account_username FROM accounts WHERE account_id = " + element.account_id, (error, res) =>{
+                            if (error){
+                                console.log("select 3 fail");
+                            }else{
+                                chatUsers.push(res[0].account_username);
+        
+                                if (index == res.length-1){
+                                    response.json(chatUsers);
+                                }
+                            }
+    
+                        });
+                    });
+                }
             
             });
         }
