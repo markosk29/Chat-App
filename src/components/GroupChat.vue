@@ -53,6 +53,11 @@
                   <input type="text" v-model="message" class="form-control">
               </div>
               <button type="submit" class="btn btn-primary">Send</button>
+               <div class="gorm-group pb-3">
+                  <label for="addUser">Insert user name:</label>
+                  <input type="text" v-model="userName" class="form-control">
+              </div>
+              <button type="button" v-on:click="addUser()" class="btn btn-primary">Add user</button>
           </form>
       </div>
     </div>
@@ -114,6 +119,14 @@ export default{
             axios
              .post("http://localhost:3000/chats", {
                  params: {
+                     chatName: this.chatName
+                     }
+                 })
+             .then(response => (console.log(response.data)));
+
+            axios
+             .post("http://localhost:3000/messages", {
+                 params: {
                      chatName: this.chatName,
                      userName: this.user,
                      date: this.getDate() + " ",
@@ -145,6 +158,15 @@ export default{
                      }
                  })
              .then(response => (this.users = response.data));
+
+        //initialize messages
+        axios
+             .get("http://localhost:3000/message", {
+                 params: {
+                     chatName: this.selectedChat
+                     }
+                 })
+             .then(response => (this.messages = response.data));
         },
 
         sendMessage(e) {
@@ -152,13 +174,13 @@ export default{
 
             this.socket.emit('SEND_MESSAGE', {
                 date: this.getDate() + " ",
-                user: this.user + ":",
+                user: this.user + ": ",
                 message: this.message
             });
 
             //insert message in database
             axios
-             .post("http://localhost:3000/chats", {
+                .post("http://localhost:3000/messages", {
                  params: {
                      chatName: this.chatName,
                      userName: this.user,

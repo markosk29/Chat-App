@@ -42,8 +42,10 @@ api.get('/chats', (request, response) => {
             console.log("1 select name fail");
         } else {
 
+            let accId =  result[0].account_id;
+
             //get chat id's from the current user
-            connection.query("SELECT group_id FROM accountsgroupsrelation WHERE account_id = ?", result[0].account_id, (error, res, fields) => {
+            connection.query("SELECT group_id FROM accountsgroupsrelation WHERE account_id = ?", accId, (error, res) => {
                 let chatIds = [];
                 if (error) {
                     console.log("select 2 fail");
@@ -79,30 +81,18 @@ api.get('/chats', (request, response) => {
 
 });
 
-api.post('/chats', (request, response) => {
-    console.log(request.body.params.userName);
-
+//insert new messages
+api.post('/messages', (request, response) => {
     //get the current user id
     connection.query("SELECT account_id FROM accounts WHERE account_username = ? ", request.body.params.userName, (error, result) => {
         if (error) {
             console.log("1 select name fail");
         } else {
-            console.log(result);
             let userId = result[0].account_id;
-            console.log(userId);
 
             console.log(request.body.params.chatName);
 
-
             let groupName = request.body.params.chatName;
-            //insert chat name in database
-            connection.query("INSERT INTO chatgroups (group_name) VALUES (?)", groupName, (error, insertResult) => {
-                if (error) {
-                    console.log("inserare nereusita");
-                } else {
-                    console.log("inserare reusita");
-                }
-            });
 
             //relation between the user who created the chat and the chat table
             connection.query("SELECT group_id FROM chatgroups WHERE group_name = ? ", groupName, (error, groupIdRes) => {
@@ -158,9 +148,96 @@ api.post('/chats', (request, response) => {
                 }
             });
         }
-
-
     });
+});
+
+//insert new chats
+api.post('/chats', (request, response) => {
+    console.log(request.body.params.userName);
+
+    //get the current user id
+    connection.query("SELECT account_id FROM accounts WHERE account_username = ? ", request.body.params.userName, (error, result) => {
+        if (error) {
+            console.log("1 select name fail");
+        } else {
+            let userId = result[0].account_id;
+
+            let groupName = request.body.params.chatName;
+            //insert chat name in database
+            connection.query("INSERT INTO chatgroups (group_name) VALUES (?)", groupName, (error, insertResult) => {
+                if (error) {
+                    console.log("inserare nereusita");
+                } else {
+                    console.log("inserare reusita");
+                }
+            });
+        }
+    });
+});
+
+//get messages
+api.get('/message', (request, response) => {
+    console.log(request.query);
+
+    let chatName = request.query.chatName;
+    connection.query("SELECT group_id FROM chatgroups WHERE group_name = ? ", chatName, (error, result) => {
+        if (error) {
+            console.log("1 select chat name fail");
+        } else {
+            console.log(result);
+            let id = result[0].group_id;
+            connection.query("SELECT message_id FROM groupsmessagesrelation WHERE group_id = " + id, (error, res) => {
+
+                if (error) {
+                    console.log("select 2 fail");
+                } else {
+                    console.log(res);
+                    let messages = [];
+
+                    res.forEach((msg, index) => {
+                        console.log(msg.message_id);
+                        let user = '';
+                        let msgId = msg.message_id;
+                        connection.query("SELECT * FROM messages WHERE message_id = ? ", msgId, (error, msgRes) => {
+                            if (error) {
+                                console.log("select message fail");
+                            } else {
+                                console.log(msgRes);
+                                
+                                let userId = msgRes[0].message_sender_id;
+                                connection.query("SELECT account_username FROM accounts WHERE account_id = ? ", userId, (error, accRes) => {
+                                    if (error) {
+                                        console.log("select message fail");
+                                    } else {
+                                        console.log(accRes);
+                                        
+                                        user = accRes[0].account_username;
+
+                                        messages.push({
+                                            user: user,
+                                            date: msgRes[0].message_datime,
+                                            message: msgRes[0].message_content
+                                        });
+
+                                        console.log(messages);
+
+                                        console.log(index == (res.length - 1));
+
+                                        if (index == (res.length - 1)){
+                                            response.json(messages);
+                                        }
+                                        
+                                    }
+                                });
+                            }
+                        });
+                    });
+                }
+
+            });
+        }
+    });
+
 });
 
 api.get('/chatMembers', (request, response) => {
