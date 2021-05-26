@@ -8,7 +8,7 @@ api.get('/', function(request, response) {
     });
 });
 
-api.get('/chats', (request, response) => {
+/*api.get('/chats', (request, response) => {
     const name = request.name;
     connection.query("SELECT account_id FROM accounts WHERE account_username = name", (error, result) => {
         if (error){
@@ -32,13 +32,15 @@ api.get('/chats', (request, response) => {
     response.json("get");
 
 });
-
-api.put('/chats', (request, response) => {
-    let name = request.body.name;
+*/
+api.get('/chats', (request, response) => {
+    let name = request.query.name;
+    console.log("Request querry:");
+    console.log(request.query.name);
     //get the current user id
     connection.query("SELECT account_id FROM accounts WHERE account_username = ? ", name, (error, result) => {
         if (error){
-            console.log("select name fail");
+            console.log("1 select name fail");
         }else{
 
             //get chat id's from the current user
@@ -76,7 +78,6 @@ api.put('/chats', (request, response) => {
         }
     });
 
-    console.log(chats);
 });
 
 api.get('/notifications', function(request, response) {

@@ -78,8 +78,13 @@ export default{
 
         console.log(this.user);
 
+        //initialize chats
         axios
-             .put("http://localhost:3000/chats", {"name": this.user})
+             .get("http://localhost:3000/chats", {
+                 params: {
+                     name: this.user
+                     }
+                 })
              .then(response => (this.chatNames = response.data));
 
         this.socket.emit('JOIN', {
