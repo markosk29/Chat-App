@@ -30,15 +30,15 @@
               <hr>
           </div>
           <div class="card-body">
-              <div class="messages" v-for="(msg, index) in messages" :key="index">
-                  <p>{{ msg.date }}<span class="font-weight-bold">{{ msg.user }} </span>{{ msg.message }}</p>
+              <div class="messages" v-for="(msg, index) in messages" :key="index" v-on:click="selectChat(name)">
+                  <p>{{ msg.date }} <span class="font-weight-bold">{{ msg.user }}: </span> {{ msg.message }}</p>
               </div>
           </div>
       </div>
       <div class="card-footer">
           <form @submit.prevent="sendMessage">
               <div class="gorm-group">
-                  <label for="user">User: {{user}}</label>
+                  <label for="user">User name: {{user}}</label>
               </div>
               <div class="form-inline">
                   <label for="users">Chat users: </label>
@@ -73,6 +73,7 @@ export default{
     data() {
         return {
             selectedChat: '',
+            userName: '',
             chatName: '',
             chatNames: [],
             date: '',
@@ -102,19 +103,22 @@ export default{
              .then(response => (this.chatNames = response.data));
 
         this.socket.emit('JOIN', {
-            date: this.getDate() + " ",
+            chat: this.selectedChat,
+            date: this.getDate(),
             user: this.user,
-            message: " entered the chat"
+            message: " is online"
         });
 
         this.socket.on('JOIN_MSG', (msg) => {
-            this.messages = [...this.messages, msg];
+            if (msg.chat == this.selectedChat){
+                this.messages = [...this.messages, msg];
+            }
         });
 
     },
     methods: {
+        //Add a new chat
         addChatName(){
-            this.chatNames.push(this.chatName);
 
             axios
              .post("http://localhost:3000/chats", {
@@ -129,13 +133,40 @@ export default{
                  params: {
                      chatName: this.chatName,
                      userName: this.user,
+                     date: this.getDate(),
+                     message: "entered the chat"
+                     }
+                 })
+             .then(response => (console.log(response.data)));
+
+            this.chatNames.push(this.chatName);
+
+            this.chatName = "";
+        },
+
+        addUser() {
+            this.users.push(this.userName);
+
+            console.log(this.selectedChat);
+
+             axios
+             .post("http://localhost:3000/chatMembers",{
+                     chatName: this.selectedChat,
+                     addedUser: this.userName,
+                     })
+             .then(response => (console.log(response.data)))
+
+             axios
+             .post("http://localhost:3000/messages", {
+                 params: {
+                     chatName: this.selectedChat,
+                     addedUser: this.userName,
                      date: this.getDate() + " ",
                      message: " entered the chat"
                      }
                  })
              .then(response => (console.log(response.data)));
-
-            this.chatName = "";
+            this.userName = '';
         },
 
         getDate(){
@@ -154,7 +185,8 @@ export default{
         axios
              .get("http://localhost:3000/chatMembers", {
                  params: {
-                     chatName: this.selectedChat
+                     chatName: this.selectedChat,
+                     userName: this.user
                      }
                  })
              .then(response => (this.users = response.data));
@@ -163,7 +195,8 @@ export default{
         axios
              .get("http://localhost:3000/message", {
                  params: {
-                     chatName: this.selectedChat
+                     chatName: this.selectedChat,
+                     userName: this.user
                      }
                  })
              .then(response => (this.messages = response.data));
@@ -173,8 +206,9 @@ export default{
             e.preventDefault();
 
             this.socket.emit('SEND_MESSAGE', {
-                date: this.getDate() + " ",
-                user: this.user + ": ",
+                chat: this.selectedChat,
+                date: this.getDate(),
+                user: this.user,
                 message: this.message
             });
 
@@ -182,7 +216,7 @@ export default{
             axios
                 .post("http://localhost:3000/messages", {
                  params: {
-                     chatName: this.chatName,
+                     chatName: this.selectedChat,
                      userName: this.user,
                      date: this.getDate() + " ",
                      message: this.message
@@ -195,8 +229,9 @@ export default{
     },
     mounted() {
         this.socket.on('MESSAGE', (data) => {
-            this.messages = [...this.messages, data];
-            // you can also do this.messages.push(data)
+            if (data.chat == this.selectedChat){
+                this.messages = [...this.messages, data];
+            }
         });
         
     }
