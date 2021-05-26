@@ -15,7 +15,7 @@
                 
                 </div>
             </form>
-            <div class="chats" style="width:1000%;" v-for="(name, index) in chatNames" :key="index" v-on:click="selectChat(name.chatName)">
+            <div class="chats" style="width:660%;" v-for="(name, index) in chatNames" :key="index" v-on:click="selectChat(name.chatName)">
                 <p>{{ name.chatName }}</p>
                 <hr>
             </div>
@@ -110,6 +110,18 @@ export default{
     methods: {
         addChatName(){
             this.chatNames.push(this.chatName);
+
+            axios
+             .post("http://localhost:3000/chats", {
+                 params: {
+                     chatName: this.chatName,
+                     userName: this.user,
+                     date: this.getDate() + " ",
+                     message: " entered the chat"
+                     }
+                 })
+             .then(response => (console.log(response.data)));
+
             this.chatName = "";
         },
 
@@ -143,6 +155,19 @@ export default{
                 user: this.user + ":",
                 message: this.message
             });
+
+            //insert message in database
+            axios
+             .post("http://localhost:3000/chats", {
+                 params: {
+                     chatName: this.chatName,
+                     userName: this.user,
+                     date: this.getDate() + " ",
+                     message: this.message
+                     }
+                 })
+             .then(response => (console.log(response.data)));
+
             this.message = ''
         }
     },
