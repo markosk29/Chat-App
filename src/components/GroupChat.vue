@@ -15,7 +15,7 @@
                 
                 </div>
             </form>
-            <div class="chats" style="width:660%;" v-for="(name, index) in chatNames" :key="index" v-on:click="selectChat(name.chatName)">
+            <div class="chats" style="width:660%;" v-for="name in chatNames" :key="name.id" v-on:click="selectChat(name.chatName)">
                 <p>{{ name.chatName }}</p>
                 <hr>
             </div>

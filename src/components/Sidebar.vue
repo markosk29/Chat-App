@@ -46,7 +46,11 @@ export default {
   },
   created: function(){
     axios
-      .get("http://localhost:3000/notifications")
+      .get("http://localhost:3000/notifications", {
+        params: {
+          accountId: 1
+        }
+      })
       .then(response => (this.notifications = response.data))
   },
   mounted: function() {
@@ -63,7 +67,7 @@ export default {
       setTimeout(() => {
         this.notifications.forEach(
             notification => {
-              if(notification.read === 'false')
+              if(notification.notification_read === 0)
               {this.unreadNotifications++}
             })
 

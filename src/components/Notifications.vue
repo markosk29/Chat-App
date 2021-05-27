@@ -6,21 +6,21 @@
   </div>
 
   <div class="table">
-    <div v-for="(notification, index) in notifications" :key="notification.text">
-      <div class="notification" v-if="notification.read === 'true'">
-        <p class="notificationDate" style="color: gray; font-size: 20px; margin-left: 35px">{{ notification.time }}</p>
-        <p class="notificationMessage" style="color: gray">{{ notification.text }}</p>
+    <div v-for="(notification, index) in notifications" :key="notification.notification_message">
+      <div class="notification" v-if="notification.notification_read === 1">
+        <p class="notificationDate" style="color: gray; font-size: 20px; margin-left: 35px">{{ notification.notification_date }}</p>
+        <p class="notificationMessage" style="color: gray">{{ notification.notification_message }}</p>
       </div>
-      <div class="notification" v-if="notification.read === 'false'" @click="selectNotification(index)">
-        <input v-model="checkboxes[index]" type="checkbox" onclick="return false;" v-if="notification.read === 'false'" style="margin-right: 20px"/>
-        <p class="notificationDate" v-if="notification.read === 'false'" style="color: black; font-size: 20px">{{ notification.time }}</p>
-        <p class="notificationMessage" v-if="notification.read === 'false'" style="color: black">{{ notification.text }}</p>
+      <div class="notification" v-if="notification.notification_read === 0" @click="selectNotification(index)">
+        <input v-model="checkboxes[index]" type="checkbox" onclick="return false;" v-if="notification.notification_read === 0" style="margin-right: 20px"/>
+        <p class="notificationDate" v-if="notification.notification_read === 0" style="color: black; font-size: 20px">{{ notification.notification_date}}</p>
+        <p class="notificationMessage" v-if="notification.notification_read === 0" style="color: black">{{ notification.notification_message}}</p>
       </div>
     </div>
   </div>
 
-  <div class="button1">
-    <p>MARK AS READ</p>
+  <div class="button1" @click="markAsRead">
+    <p></p>
   </div>
 
 </template>
@@ -37,7 +37,11 @@ export default {
   },
   created: function(){
     axios
-        .get("http://localhost:3000/notifications")
+        .get("http://localhost:3000/notifications", {
+          params: {
+            accountId: 1
+          }
+        })
         .then(response => (this.notifications = response.data))
 
     this.uncheckAllBoxes();
@@ -49,6 +53,14 @@ export default {
     selectNotification(index) {
       this.checkboxes[index] = !this.checkboxes[index];
       console.log("test");
+    },
+    markAsRead() {
+      this.checkboxes.forEach((element, index) => {
+            if(element === true) {
+                this.notifications[index].notification_read = 1;
+            }
+          }
+      )
     }
   }
 }

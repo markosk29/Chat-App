@@ -1,5 +1,4 @@
 let api = require('./api.js').app;
-let notifications = require('./src/json/notifications.json');
 
 api.get('/', function (request, response) {
     response.json("node.js backend");
@@ -13,6 +12,7 @@ api.get('/', function (request, response) {
 */
 api.get('/chats', (request, response) => {
     let name = request.query.name;
+    console.log(name);
 
     /*
         get the current user id
@@ -124,7 +124,7 @@ api.post('/messages', (request, response) => {
                     /*
                         add the message to database
                     */
-                    connection.query("INSERT INTO messages (message_time, message_sender_id, message_content, message_datime) VALUES (?, ?, ?, ?)", [messageDate, userId, messageContent, messageDate], (error, insertResult) => {
+                    connection.query("INSERT INTO messages (message_sender_id, message_content, message_date) VALUES (?, ?, ?)", [userId, messageContent, messageDate], (error, insertResult) => {
                         if (error) {
                             console.log("inserare mesaj nereusit");
                         } else {
@@ -135,11 +135,11 @@ api.post('/messages', (request, response) => {
                     /*
                         get the inserted message id
                     */
-                    connection.query("SELECT message_id FROM messages WHERE message_sender_id = ? AND message_content = ?  AND message_datime = ?", [userId, messageContent, messageDate], (error, msgIdRes) => {
+                    connection.query("SELECT message_id FROM messages WHERE message_sender_id = ? AND message_content = ?  AND message_date = ?", [userId, messageContent, messageDate], (error, msgIdRes) => {
                         if (error) {
                             console.log("select 2 fail");
                         } else {
-                            console.log(msgIdRes[0].message_id);
+                            console.log(msgIdRes[0].messsage_id);
                             let messageIndex = msgIdRes[0].message_id;
 
                             /*
@@ -195,7 +195,7 @@ api.get('/message', (request, response) => {
     /*
         get the id for a group name
     */
-    connection.query("SELECT group_id FROM chatgroups WHERE group_name = ? ", chatName, (error, result) => {
+    connection.query("SELECT group_id FROM chatgroups WHERE group_name = ? ", [chatName], (error, result) => {
         if (error) {
             console.log("get chat message select group id");
         } else {
@@ -205,7 +205,7 @@ api.get('/message', (request, response) => {
             /*
                 get the message id from group-message relation
             */
-            connection.query("SELECT message_id FROM groupsmessagesrelation WHERE group_id = ?", id, (error, res) => {
+            connection.query("SELECT message_id FROM groupsmessagesrelation WHERE group_id = ?", [id], (error, res) => {
 
                 if (error) {
                     console.log("get chat message select msg id");
@@ -221,7 +221,7 @@ api.get('/message', (request, response) => {
                         /*
                             select all fields from messages
                         */
-                        connection.query("SELECT * FROM messages WHERE message_id = ? ", msgId, (error, msgRes) => {
+                        connection.query("SELECT * FROM messages WHERE message_id = ? ", [msgId], (error, msgRes) => {
                             if (error) {
                                 console.log("get chat message select *");
                             } else {
@@ -232,7 +232,7 @@ api.get('/message', (request, response) => {
                                 /*
                                     select account username from accounts
                                 */
-                                connection.query("SELECT account_username FROM accounts WHERE account_id = ? ", userId, (error, accRes) => {
+                                connection.query("SELECT account_username FROM accounts WHERE account_id = ? ", [userId], (error, accRes) => {
                                     if (error) {
                                         console.log("get chat message select acc username");
                                     } else {
@@ -367,9 +367,24 @@ api.post('/chatMembers', (request, response) =>{
 
 });
 
-api.get('/notifications', function (request, response) {
-    response.json(notifications);
+api.get('/notifications', (request, response) => {
+    let id = request.query.accountId;
+    let notifications = [];
+
+    connection.query("SELECT * FROM notifications WHERE notification_destination = ?", [id], (error, res) => {
+        if(error) {
+            console.log(error.message);
+        } else {
+            res.forEach((element, index) => {
+                notifications.push(res[index]);
+                console.log(res[index].notification_id);
+            })
+
+            response.json(notifications);
+        }
+    })
 });
+
 
 //use mysql
 var mysql = require("mysql");
@@ -379,7 +394,7 @@ var connection = mysql.createConnection({
     host: "localhost",
     user: "root",
     //sa modific inainte sa dau push
-    password: "password",
+    password: "@root123",
     database: "test",
     port: "3306"
 });
