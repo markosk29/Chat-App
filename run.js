@@ -385,6 +385,26 @@ api.get('/notifications', (request, response) => {
     })
 });
 
+api.post('/register',(request, response) =>{
+
+    let account_username= request.body.params.username;
+    let account_password= request.body.params.password;
+    let account_email= request.body.params.email;
+    let account_date= request.body.params.date;
+
+    console.log(account_username + ", " +account_password+ ", " +account_email + ", " +account_date);
+
+    connection.query("INSERT INTO accounts (account_username, account_password, account_email, account_date) VALUES (?,?,?,?)",
+        [account_username, account_password, account_email, account_date], (error, result) => {
+            if (error) {
+                console.log("inserare cont nereusita");
+            } else {
+                console.log("inserare cont reusita");
+            }
+        });
+
+    response.json(request.body.params);
+});
 
 //use mysql
 var mysql = require("mysql");

@@ -3,10 +3,10 @@
     <div class="form">
 
       <form class="register-form">
-        <input type="text" placeholder="username"/>
-        <input type="text" placeholder="password"/>
-        <input type="text" placeholder="email"/>
-        <button>Create</button>
+        <input type="text" placeholder="username" v-model="username"/>
+        <input type="text" placeholder="password" v-model="password"/>
+        <input type="text" placeholder="email" v-model="email"/>
+        <button @click="register">Create</button>
         <p class="message">Already Registered? <a href="#">Login</a>
         </p>
       </form>
@@ -25,13 +25,48 @@
 
 <script>
 import $ from 'jquery'
+import axios from 'axios'
 
 export default {
   name: "LoginRegister",
+  data: function() {
+    return {
+      username: '',
+      password: '',
+      email: '',
+      date: ''
+    }
+  },
   mounted() {
     $('.message a').click(function(){
       $('form').animate({height: "toggle", opacity: "toggle"}, "slow");
     });
+  },
+  methods: {
+    register() {
+      let today = new Date();
+
+      let month = today.getMonth() + 1;
+
+      if(today.getMonth() + 1 < 10) {
+        this.date = today.getFullYear() + "-0" + month + "-" + today.getDate();
+      }
+      else {
+        this.date = today.getFullYear() + "-" + month + "-" + today.getDate()
+      }
+
+      console.log(this.username + ", " +this.password+ ", " +this.email + ", " +this.date);
+
+      axios
+          .post("http://localhost:3000/register", {
+            params: {
+              username: this.username,
+              password: this.password,
+              email: this.email,
+              date: this.date
+            }
+          }).then(response => (this.test = response.data));
+    }
   }
 }
 </script>

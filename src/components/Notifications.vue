@@ -1,5 +1,4 @@
 <template>
-
   <div class="background">
     <div class="deco1"></div>
     <div class="deco2"></div>

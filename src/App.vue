@@ -1,7 +1,7 @@
 <template>
   <div id="app" class="page">
-    <LoginRegister v-if="component === 'dummy'"/>
-    <Sidebar @clickedComponent="getClickedComponent($event)" style="z-index: 10" />
+    <LoginRegister />
+    <Sidebar @clickedComponent="getClickedComponent($event)" style="z-index: 10" v-if="component === 'dummy'"/>
     <Notifications v-if="component === 'notificationsComponent'"/>
     <GroupChat class="temp2" v-if="component === 'chatComponent'"/>
     <Chat v-if="component === 'singleChatComponent'"/>
