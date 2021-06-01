@@ -38,6 +38,7 @@ CREATE TABLE `groupsmessagesrelation` (
 
 LOCK TABLES `groupsmessagesrelation` WRITE;
 /*!40000 ALTER TABLE `groupsmessagesrelation` DISABLE KEYS */;
+INSERT INTO `groupsmessagesrelation` VALUES (19,25),(20,26),(50,27),(51,28),(25,29),(52,30),(53,31),(1,32),(54,33),(55,34),(56,35),(57,36),(58,37),(59,38),(60,39),(62,40),(63,41),(76,54),(77,55),(81,58),(82,59),(60,61),(53,62),(53,63),(57,64),(85,65),(86,65),(87,67),(88,68),(89,69),(90,70),(16,71),(25,72),(29,73),(33,74),(16,75),(16,76),(16,77),(17,78),(17,79),(18,80),(25,81),(26,82),(27,83),(28,84),(98,85),(28,86),(98,87),(16,89),(16,90),(16,91),(16,92),(23,93);
 /*!40000 ALTER TABLE `groupsmessagesrelation` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -50,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-24 20:29:14
+-- Dump completed on 2021-06-01 23:06:38

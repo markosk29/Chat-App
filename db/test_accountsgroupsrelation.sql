@@ -38,6 +38,7 @@ CREATE TABLE `accountsgroupsrelation` (
 
 LOCK TABLES `accountsgroupsrelation` WRITE;
 /*!40000 ALTER TABLE `accountsgroupsrelation` DISABLE KEYS */;
+INSERT INTO `accountsgroupsrelation` VALUES (53,1),(55,1),(56,1),(58,1),(55,16),(56,16),(56,17),(56,18),(55,19),(55,20),(53,22),(53,23),(56,23),(58,23),(53,24),(55,25),(56,25),(56,26),(55,27),(56,27),(55,28),(56,28),(55,29),(55,30),(55,31),(55,32),(55,33),(55,34),(55,35),(55,36),(55,37),(55,38),(55,39),(55,40),(55,41),(55,44),(55,46),(55,50),(55,51),(55,52),(55,53),(55,54),(55,55),(55,56),(55,57),(55,58),(55,59),(55,60),(55,62),(55,63),(55,76),(55,77),(55,81),(55,82),(55,85),(55,86),(55,87),(55,88),(55,89),(55,90),(56,98);
 /*!40000 ALTER TABLE `accountsgroupsrelation` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -50,4 +51,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-05-24 20:29:13
+-- Dump completed on 2021-06-01 23:06:38
