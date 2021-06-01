@@ -49,6 +49,10 @@ export default {
         .then(response => (this.account = response.data))
 
     this.getAllNotifications();
+
+    setTimeout(() => {
+      this.countUnreadNotifications();
+    }, 50);
   },
   methods: {
     getAllNotifications() {
@@ -85,14 +89,12 @@ export default {
             }
           }
       )
-
       this.countUnreadNotifications();
 
-      setTimeout(() => {
-        this.$emit("unreadNotificationsCount", this.unreadNotifications);
-      }, 100);
     },
     countUnreadNotifications() {
+      this.unreadNotifications = 0;
+
       setTimeout(() => {
         this.notifications.forEach(
             notification => {
@@ -102,6 +104,10 @@ export default {
 
         this.$forceUpdate();
       }, 50)
+
+      setTimeout(() => {
+        this.$emit("unreadNotificationsCount", this.unreadNotifications);
+      }, 100);
     },
   }
 }

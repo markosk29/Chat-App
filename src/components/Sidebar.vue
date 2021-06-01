@@ -50,6 +50,11 @@ export default {
 
     console.log(this.count);
   },
+  watch: {
+    count: function() {
+      this.unreadNotifications = this.count;
+    }
+  },
   methods:{
     meetsConditions() {
       return (this.unreadNotifications > 0) && (this.unreadNotifications < 100);
