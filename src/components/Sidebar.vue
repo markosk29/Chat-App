@@ -10,69 +10,49 @@
       <p class="unreadNotifications" v-if="meetsConditions()">{{unreadNotifications}}</p>
       <p class="unreadNotifications" v-if="unreadNotifications > 100">99+</p>
     </div>
-    <div class="button2" >
-      <img src="../assets/user.png" class="userIcon">
-      <div class="extendedUser">
-        <p class="profileText">Profile</p>
-      </div>
-    </div>
-    <div class="button3" @click='show(3)'>
+    <div class="button2" @click='show(3)'>
       <img src="../assets/chat.png" class="chatIcon">
       <div class="extendedChat">
         <p class="chatText">Chat</p>
       </div>
     </div>
-    <div class="button4" >
+    <div class="button3" @click="show(4)">
       <img src="../assets/settings.png" class="settingsIcon">
       <div class="extendedSettings">
-        <p class="settingsText">Settings</p>
+        <p class="profileText">Settings</p>
+      </div>
+    </div>
+    <div class="button4" @click="logout">
+      <img src="../assets/logout.png" class="logoutIcon">
+      <div class="extendedLogout">
+        <p class="settingsText">Logout</p>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
-
 export default {
   name: 'Sidebar',
-
+  props: ['usernameProp', 'count'],
   data: function() {
     return {
       notifications: [],
       unreadNotifications: 0,
-      component: 'none'
+      component: 'none',
+      user: '',
+      account: ''
     }
   },
   created: function(){
-    axios
-      .get("http://localhost:3000/notifications", {
-        params: {
-          accountId: 1
-        }
-      })
-      .then(response => (this.notifications = response.data))
-  },
-  mounted: function() {
-    this.countUnreadNotifications();
+    this.user = this.usernameProp;
+    this.unreadNotifications = this.count;
+
+    console.log(this.count);
   },
   methods:{
-    outputNotifications() {
-      this.notifications.forEach(notification => {console.log(notification.text+ " -- " +notification.read)});
-    },
     meetsConditions() {
       return (this.unreadNotifications > 0) && (this.unreadNotifications < 100);
-    },
-    countUnreadNotifications() {
-      setTimeout(() => {
-        this.notifications.forEach(
-            notification => {
-              if(notification.notification_read === 0)
-              {this.unreadNotifications++}
-            })
-
-        this.$forceUpdate();
-      }, 50)
     },
     show(id){
       if(id === 1) {
@@ -81,6 +61,12 @@ export default {
       if(id === 3) {
         this.$emit('clickedComponent', 'chatComponent');
       }
+      if(id === 4) {
+        this.$emit('clickedComponent', 'settingsComponent');
+      }
+    },
+    logout() {
+      this.$emit("logout", true);
     }
   }
 }
@@ -167,7 +153,7 @@ export default {
   );
 }
 
-.notificationIcon, .userIcon, .settingsIcon, .chatIcon {
+.notificationIcon, .logoutIcon, .settingsIcon, .chatIcon {
   position: relative;
   top: 20px;
   left: 5px;
@@ -198,7 +184,7 @@ export default {
   );
 }
 
-.extendedUser {
+.extendedChat {
   display: none;
   position: fixed;
   top: 185px;
@@ -212,7 +198,7 @@ export default {
   );
 }
 
-.extendedChat {
+.extendedSettings {
   display: none;
   position: fixed;
   top: 295px;
@@ -226,7 +212,7 @@ export default {
   );
 }
 
-.extendedSettings {
+.extendedLogout {
   display: none;
   position: fixed;
   top: 405px;
@@ -240,7 +226,7 @@ export default {
   );
 }
 
-.notificationIcon:hover + .extendedNotification, .userIcon:hover + .extendedUser, .settingsIcon:hover + .extendedSettings, .chatIcon:hover + .extendedChat {
+.notificationIcon:hover + .extendedNotification, .logoutIcon:hover + .extendedLogout, .settingsIcon:hover + .extendedSettings, .chatIcon:hover + .extendedChat {
   display: block;
 }
 

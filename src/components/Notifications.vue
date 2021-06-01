@@ -11,7 +11,7 @@
         <p class="notificationMessage" style="color: gray">{{ notification.notification_message }}</p>
       </div>
       <div class="notification" v-if="notification.notification_read === 0" @click="selectNotification(index)">
-        <input v-model="checkboxes[index]" type="checkbox" onclick="return false;" v-if="notification.notification_read === 0" style="margin-right: 20px"/>
+        <input v-model="checkboxes[index]" type="checkbox" onclick="return false;" v-if="notification.notification_read === 0" style="margin-right: 20px; margin-left: 5px"/>
         <p class="notificationDate" v-if="notification.notification_read === 0" style="color: black; font-size: 20px">{{ notification.notification_date}}</p>
         <p class="notificationMessage" v-if="notification.notification_read === 0" style="color: black">{{ notification.notification_message}}</p>
       </div>
@@ -19,7 +19,7 @@
   </div>
 
   <div class="button1" @click="markAsRead">
-    <p></p>
+    <p class="buttonText">MARK AS READ</p>
   </div>
 
 </template>
@@ -29,23 +29,41 @@ import axios from "axios";
 
 export default {
   name: "Notifications",
-
+  props: ['usernameProp'],
   data() {
     return {notifications: [],
-    checkboxes: []}
+    checkboxes: [],
+    account: '',
+    user: '',
+    unreadNotifications: 0}
   },
   created: function(){
+    this.user = this.usernameProp;
+
     axios
-        .get("http://localhost:3000/notifications", {
+        .get("http://localhost:3000/user", {
           params: {
-            accountId: 1
+            username: this.user
           }
         })
-        .then(response => (this.notifications = response.data))
+        .then(response => (this.account = response.data))
 
-    this.uncheckAllBoxes();
+    this.getAllNotifications();
   },
   methods: {
+    getAllNotifications() {
+      setTimeout(() => {
+        axios
+            .get("http://localhost:3000/notifications", {
+              params: {
+                accountId: this.account.account_id
+              }
+            })
+            .then(response => (this.notifications = response.data))
+
+        this.uncheckAllBoxes();
+      }, 50);
+    },
     uncheckAllBoxes() {
       this.notifications.forEach(index => this.checkboxes[index] = false)
     },
@@ -57,10 +75,34 @@ export default {
       this.checkboxes.forEach((element, index) => {
             if(element === true) {
                 this.notifications[index].notification_read = 1;
+
+                axios
+                    .post("http://localhost:3000/updateNotification", {
+                  params: {
+                      notificationId: this.notifications[index].notification_id
+                  }
+                })
             }
           }
       )
-    }
+
+      this.countUnreadNotifications();
+
+      setTimeout(() => {
+        this.$emit("unreadNotificationsCount", this.unreadNotifications);
+      }, 100);
+    },
+    countUnreadNotifications() {
+      setTimeout(() => {
+        this.notifications.forEach(
+            notification => {
+              if(notification.notification_read === 0)
+              {this.unreadNotifications++}
+            })
+
+        this.$forceUpdate();
+      }, 50)
+    },
   }
 }
 </script>
@@ -119,8 +161,8 @@ export default {
 
 .button1 {
   position: absolute;
-  left: 1300px;
-  top: 300px;
+  left: 1400px;
+  top: 400px;
   background: #5AB9EA;
   width: 250px;
   height: 100px;
@@ -128,6 +170,14 @@ export default {
 
 .button1:hover {
   background: #5680E9;
+}
+
+.buttonText {
+  position: absolute;
+  top: 25px;
+  left: 16px;
+  font-size: 30px;
+  font-weight: bolder;
 }
 
 /* Scrollbar costum */
